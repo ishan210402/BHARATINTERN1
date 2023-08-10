@@ -1,0 +1,61 @@
+import random
+
+class Item:
+    def __init__(self, name, department, demand_rate):
+        self.name = name
+        self.department = department
+        self.demand_rate = demand_rate
+        self.stock = 0
+    
+    def generate_demand(self):
+        return random.uniform(0, self.demand_rate)
+
+class Department:
+    def __init__(self, name):
+        self.name = name
+        self.items = []
+    
+    def add_item(self, item):
+        self.items.append(item)
+
+class Supermarket:
+    def __init__(self):
+        self.departments = []
+    
+    def add_department(self, department):
+        self.departments.append(department)
+    
+    def stock_items(self):
+        for department in self.departments:
+            print(f"Stocking items for {department.name} department:")
+            for item in department.items:
+                demand = item.generate_demand()
+                if demand > 0.8 and item.stock < 10:
+                    print(f"Stocking {item.name} ({item.department}) due to high demand.")
+                    item.stock += 1
+                else:
+                    print(f"Not stocking {item.name} ({item.department}). Demand is low.")
+                print(f"{item.name} stock: {item.stock}\n")
+                
+
+# Create items and departments
+item1 = Item("Bread", "Bakery", 0.9)
+item2 = Item("Milk", "Dairy", 0.8)
+item3 = Item("Apples", "Produce", 0.7)
+
+bakery = Department("Bakery")
+bakery.add_item(item1)
+
+dairy = Department("Dairy")
+dairy.add_item(item2)
+
+produce = Department("Produce")
+produce.add_item(item3)
+
+supermarket = Supermarket()
+supermarket.add_department(bakery)
+supermarket.add_department(dairy)
+supermarket.add_department(produce)
+
+# Stock items based on demand
+supermarket.stock_items()
